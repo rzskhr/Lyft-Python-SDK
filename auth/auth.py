@@ -2,6 +2,7 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
+
 AUTH_URL    = "https://api.lyft.com/oauth/token"
 
 
@@ -40,8 +41,10 @@ class LyftPublicAuth:
         else:
             client_secret   = "SANDBOX-{}".format(self.__config.get("client_secret"))
 
-        data                = {"grant_type": "client_credentials",
-                               "scope": "public"}
+        # TODO check if scope needs to be imported or public is sufficient
+
+        data = {"grant_type": "client_credentials",
+                "scope": "public"}
 
         authentication_response = requests.post(AUTH_URL,
                                                 headers=header,
@@ -57,8 +60,4 @@ class LyftPublicAuth:
         else:
             # TODO Add exception json here
             pass
-
-
-
-
 
