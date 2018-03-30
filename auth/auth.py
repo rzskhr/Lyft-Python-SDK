@@ -2,21 +2,14 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-
-AUTH_URL    = "https://api.lyft.com/oauth/token"
-
+from auth.url_util import PUBLIC_AUTH_URL
 
 class LyftPublicAuth:
-    """Authentication class for the 2 legged flow. This calls does not need user data and can access the public
-    endpoints directly with the client secret and client ID. After successful authentication it will retrurn the
-    access token
-
-    """
-    __sandbox_mode = None
-    __config       = None
-
     def __init__(self, config, sandbox_mode=False):
-        """
+        """Authentication class for the 2 legged flow. This calls does not need user data and can access the public
+        endpoints directly with the client secret and client ID. After successful authentication it will retrurn the
+        access token
+
 
         :param sandbox_mode: Set to True if you want a sandbox environment else False
         :param config: Dictionary of client_id and client_secret
@@ -46,7 +39,7 @@ class LyftPublicAuth:
         data = {"grant_type": "client_credentials",
                 "scope": "public"}
 
-        authentication_response = requests.post(AUTH_URL,
+        authentication_response = requests.post(PUBLIC_AUTH_URL,
                                                 headers=header,
                                                 data=json.dumps(data),
                                                 auth=HTTPBasicAuth(client_id, client_secret))
@@ -60,4 +53,19 @@ class LyftPublicAuth:
         else:
             # TODO Add exception json here
             pass
+
+
+class LyftUserAuth:
+
+    def __init__(self, config, sandbox_mode=False):
+        """Authentcation class for the 3 legged flow.
+
+        :param sandbox_mode: Set to True if you want a sandbox environment else False
+        :param config: Dictionary of client_id and client_secret
+
+        """
+        # TODO add exception here for config
+        self.__sandbox_mode = sandbox_mode
+        self.__config = config
+
 
