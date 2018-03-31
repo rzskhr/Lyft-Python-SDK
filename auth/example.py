@@ -2,7 +2,7 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-from auth.url_util import PUBLIC_AUTH_URL
+PUBLIC_AUTH_URL    = "https://api.lyft.com/oauth/token"
 
 class LyftPublicAuth:
     def __init__(self, config, sandbox_mode=False):
@@ -46,6 +46,7 @@ class LyftPublicAuth:
 
         if authentication_response.status_code == 200:
             authentication_response_json = authentication_response.json()
+
             return {"x-ratelimit-limit"     : authentication_response.headers.get("x-ratelimit-limit"),
                     "x-ratelimit-remaining" : authentication_response.headers.get("x-ratelimit-remaining"),
                     "expires_in"            : authentication_response_json.get("expires_in"),
@@ -53,20 +54,19 @@ class LyftPublicAuth:
                     "token_type"            : authentication_response_json.get("token_type")}
         else:
             # TODO Add exception json here
-            pass
+            raise Exception(authentication_response.text)
+
+auth_obj = LyftPublicAuth({"client_id": "",
+                           "clint_secret": ""})
+
+access_token_obj = auth_obj.get_access_token()
 
 
-class LyftUserAuth:
+URL = "https://api.lyft.com/v1/eta?lat=37.7763&lng=-122.3918"
 
-    def __init__(self, config, sandbox_mode=False):
-        """Authentcation class for the 3 legged flow.
+headers = {"Authorization": "{} {}".format(access_token_obj.get("token_type"),
+                                           access_token_obj.get("access_token"))}
 
-        :param sandbox_mode: Set to True if you want a sandbox environment else False
-        :param config: Dictionary of client_id and client_secret
+response = requests.get(URL, headers=headers)
 
-        """
-        # TODO add exception here for config
-        self.__sandbox_mode = sandbox_mode
-        self.__config = config
-
-
+print(response.text)
