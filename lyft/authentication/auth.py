@@ -48,11 +48,12 @@ class LyftPublicAuth:
 
         if authentication_response.status_code == 200:
             authentication_response_json = authentication_response.json()
-            return {"x-ratelimit-limit"     : authentication_response.headers.get("x-ratelimit-limit"),
-                    "x-ratelimit-remaining" : authentication_response.headers.get("x-ratelimit-remaining"),
-                    "expires_in"            : authentication_response_json.get("expires_in"),
-                    "access_token"          : authentication_response_json.get("access_token"),
-                    "token_type"            : authentication_response_json.get("token_type")}
+            return json.dumps({"x-ratelimit-limit"     : authentication_response.headers.get("x-ratelimit-limit"),
+                               "x-ratelimit-remaining" : authentication_response.headers.get("x-ratelimit-remaining"),
+                               "expires_in"            : authentication_response_json.get("expires_in"),
+                               "access_token"          : authentication_response_json.get("access_token"),
+                               "token_type"            : authentication_response_json.get("token_type")}
+                              )
         else:
             raise Exception(authentication_response.text)
 
@@ -70,7 +71,10 @@ class LyftUserAuth:
         """
         # TODO add exception here for config
         self.__sandbox_mode = sandbox_mode
-        self.__config       = config
+        if config.get("client_id") is not None and config.get("client_secret") is not None:
+            self.__config       = config
+        else:
+            raise ValueError("client id or client secret is None")
         self.__scopes       = scopes
         self.__state        = state
 
