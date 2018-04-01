@@ -57,7 +57,7 @@ class LyftPublicAuth:
             raise Exception(authentication_response.text)
 
 auth_obj = LyftPublicAuth({"client_id": "cqjvlTslH-OG",
-                           "client_secret": "YA0McszRyybz1vUGf_Vo1dYvadYbvHzQ"})
+                           "client_secret": "YA0McszRyybz1ssvUGf_Vo1dYvadYbvHzQ"})
 
 access_token_obj = auth_obj.get_access_token()
 
