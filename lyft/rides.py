@@ -75,7 +75,7 @@ class Rides:
 
         ride_request_response = requests.post(RIDE,
                                               headers=headers,
-                                              data=data)
+                                              data=json.dumps(data))
 
         if ride_request_response.status_code == 201:
             return ride_request_response.json()
@@ -121,17 +121,79 @@ class Rides:
                                                    self.__access_token),
                    "content-type" : "application/json"}
 
-        data = {"lat" : lat,
-                "lng" : lng}
+        if address is None:
+            data = {"lat" : lat,
+                    "lng" : lng}
+        else:
+            data = {"lat"    : lat,
+                    "lng"    : lng,
+                    "address": address}
 
         update_destination_response = requests.put("{}/{}/destination".format(RIDE,
                                                                               ride_id),
                                                    headers=headers,
-                                                   data=data)
+                                                   data=json.dumps(data))
 
         if update_destination_response.status_code == 200:
             return json.dumps({"message": "Success"})
 
         else:
             raise Exception(update_destination_response.json())
+
+    def set_rating_and_tip(self, ride_id, rating, tip_amount=None, currency="USD"):
+        """Allows to tip the user and set rating for him, Rating is mandatory and accepts values from 1 to 5, while
+        tip is optional
+        https://developer.lyft.com/reference#ride-request-rating-and-tipping
+
+        :param ride_id: Id of the ride that you want to give rating and tip to
+        :param tip_amount: Amount to tip in float
+        :param rating: Rating from range 1 to 5
+        :param currency: Currency format, by default currency is USD
+        :return: Message object
+        """
+        headers = {"Authorization": "{} {}".format(self.token_type,
+                                                   self.__access_token),
+                   "content-type" : "application/json"}
+
+        if int(rating) > 5:
+            raise ValueError(json.dumps({"Message": "Please enter rating less than 5"}))
+
+        if tip_amount is None:
+            data = {"rating": rating}
+
+        else:
+            data = {"rating": rating,
+                    "tip"   : {
+                        "amount": tip_amount,
+                        "currency": currency
+                    }}
+
+        rating_tip_response = requests.put("{}/{}/rating".format(RIDE, ride_id),
+                                           headers=headers,
+                                           data=json.dumps(data))
+
+        if rating_tip_response.status_code == 204:
+            return json.dumps({"message": "Success"})
+
+        else:
+            raise Exception(rating_tip_response.json())
+
+    def get_receipt(self, ride_id):
+        """Get a receipt for the ride. Receipts are only available after the passenger has rated the ride and the
+        payment processing has been completed
+
+        :param ride_id: Id of ride you want to retrieve the receipt
+        :return: Receipt JSON object
+        """
+        headers = {"Authorization": "{} {}".format(self.token_type,
+                                                   self.__access_token),
+                   "content-type": "application/json"}
+
+        receipt_response = requests.get("{}/{}/receipt".format(RIDE, ride_id),
+                                        headers=headers)
+
+        if receipt_response.status_code == 200:
+            return receipt_response.json()
+        else:
+            raise Exception(receipt_response.json())
 
