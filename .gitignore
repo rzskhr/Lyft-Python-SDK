@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+bin/
+include/
+lib/
+lib64/
+pyvenv.cfg
+pip-selfcheck.json
+test.html
+.gitignore
+.idea/
