@@ -56,8 +56,9 @@ class LyftPublicAuth:
             # TODO Add exception json here
             raise Exception(authentication_response.text)
 
-auth_obj = LyftPublicAuth({"client_id": "cqjvlTslH-OG",
-                           "client_secret": "YA0McszRyybz1ssvUGf_Vo1dYvadYbvHzQ"})
+
+auth_obj = LyftPublicAuth({"client_id": "deletedTheKeyForSecurityReasons-OG",
+                           "client_secret": "deletedTheKeyForSecurityReasons-sdfds"})
 
 access_token_obj = auth_obj.get_access_token()
 
