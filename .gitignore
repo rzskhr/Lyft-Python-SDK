@@ -6,3 +6,4 @@ lib64/
 pyvenv.cfg
 pip-selfcheck.json
 test.html
+.idea/
