@@ -7,3 +7,4 @@ pyvenv.cfg
 pip-selfcheck.json
 test.html
 .idea/
+__pycache__/
