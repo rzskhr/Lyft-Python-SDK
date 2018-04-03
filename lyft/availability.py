@@ -1,6 +1,6 @@
 import requests
 
-from lyft.util.url_util import API_DEF
+from lyft.util.url_util import AVAILABILITY
 
 
 class Availability(object):
@@ -30,9 +30,9 @@ class Availability(object):
         lng = float(lng)
 
         if ride_type is None:
-            ride_types_url = API_DEF+"ridetypes?lat={}&lng={}".format(lat, lng)
+            ride_types_url = "{}ridetypes?lat={}&lng={}".format(AVAILABILITY, lat, lng)
         else:
-            ride_types_url = API_DEF+"ridetypes?lat={}&lng={}&ride_type={}".format(lat, lng, ride_type)
+            ride_types_url = "{}ridetypes?lat={}&lng={}&ride_type={}".format(AVAILABILITY, lat, lng, ride_type)
 
         headers = {"Authorization": "{} {}".format(self.token_type,
                                                    self.__access_token)}
@@ -45,7 +45,7 @@ class Availability(object):
         else:
             raise Exception(ride_types_available_response.json())
 
-    def get_driver_eta(self, lat, lng, destination_lat=None, destination_lng=None, ride_type=None):
+    def get_driver_eta(self, lat, lng, destination_lat=None, end_lng=None, ride_type=None):
         """
         A GET to the /eta endpoint returns the estimated time in seconds it will take for the nearest driver to
         reach the specified location. A success response will be broken down by ridetypes available at the
@@ -58,31 +58,31 @@ class Availability(object):
         :param lat: float, REQUIRED, Latitude of a location
         :param lng: float, REQUIRED, Longitude of a location
         :param destination_lat: float, Latitude of a location
-        :param destination_lng: float, Longitude of a location
+        :param end_lng: float, Longitude of a location
         :param ride_type: string, ID of a ride type. Returned by this endpoint
         :return: driver eta available in JSON format
         """
         lat = float(lat)
         lng = float(lng)
         # check if destination is given
-        if all([destination_lat, destination_lng]) is True:
+        if all([destination_lat, end_lng]) is True:
             destination_lat = float(destination_lat)
-            destination_lng = float(destination_lng)
+            end_lng = float(end_lng)
 
         # construct the request URL
-        if ride_type is None and (destination_lat is None or destination_lng is None):
-            driver_eta_url = API_DEF+"eta?lat={}&lng={}".format(lat, lng)
+        if ride_type is None and (destination_lat is None or end_lng is None):
+            driver_eta_url = "{}eta?lat={}&lng={}".format(AVAILABILITY, lat, lng)
 
-        elif ride_type is not None and (destination_lat is None or destination_lng is None):
-            driver_eta_url = API_DEF+"eta?lat={}&lng={}&ride_type={}".format(lat, lng, ride_type)
+        elif ride_type is not None and (destination_lat is None or end_lng is None):
+            driver_eta_url = "{}eta?lat={}&lng={}&ride_type={}".format(AVAILABILITY, lat, lng, ride_type)
 
-        elif ride_type is not None and (destination_lat is not None or destination_lng is not None):
-            driver_eta_url = API_DEF+"eta?lat={}&lng={}&destination_lat={}&destination_lng={}&ride_type={}".format(
-                lat, lng, destination_lat, destination_lng, ride_type)
+        elif ride_type is not None and (end_lat is not None or end_lng is not None):
+            driver_eta_url = "{}eta?lat={}&lng={}&end_lat={}&destination_lng={}&ride_type={}".format(
+                AVAILABILITY, lat, lng, end_lat, end_lng, ride_type)
 
-        elif ride_type is None and (destination_lat is not None or destination_lng is not None):
-            driver_eta_url = API_DEF+"eta?lat={}&lng={}&destination_lat={}&destination_lng={}".format(
-                lat, lng, destination_lat, destination_lng)
+        elif ride_type is None and (end_lat is not None or end_lng is not None):
+            driver_eta_url = "{}eta?lat={}&lng={}&end_lat={}&destination_lng={}".format(
+                AVAILABILITY, lat, lng, end_lat, end_lng)
 
         headers = {"Authorization": "{} {}".format(self.token_type,
                                                    self.__access_token)}
@@ -122,18 +122,18 @@ class Availability(object):
 
         # construct the request URL
         if ride_type is None and (end_lat is None or end_lng is None):
-            ride_estimates_url = API_DEF+"cost?start_lat={}&start_lng={}".format(start_lat, start_lng)
+            ride_estimates_url = "{}cost?start_lat={}&start_lng={}".format(AVAILABILITY,start_lat, start_lng)
 
         elif ride_type is not None and (end_lat is None or end_lng is None):
-            ride_estimates_url = API_DEF+"cost?start_lat={}&start_lng={}&ride_type={}".format(start_lat, start_lng, ride_type)
+            ride_estimates_url = "{}cost?start_lat={}&start_lng={}&ride_type={}".format(AVAILABILITY,start_lat, start_lng, ride_type)
 
         elif ride_type is not None and (end_lat is not None or end_lng is not None):
-            ride_estimates_url = API_DEF+"cost?start_lat={}&start_lng={}&end_lat={}&end_lng={}&ride_type={}".format(
-                start_lat, start_lng, end_lat, end_lng, ride_type)
+            ride_estimates_url = "{}cost?start_lat={}&start_lng={}&end_lat={}&end_lng={}&ride_type={}".format(
+                AVAILABILITY, start_lat, start_lng, end_lat, end_lng, ride_type)
 
         elif ride_type is None and (end_lat is not None or end_lng is not None):
-            ride_estimates_url = API_DEF+"cost?start_lat={}&start_lng={}&end_lat={}&end_lng={}".format(
-                start_lat, start_lng, end_lat, end_lng)
+            ride_estimates_url = "{}cost?start_lat={}&start_lng={}&end_lat={}&end_lng={}".format(
+                AVAILABILITY, start_lat, start_lng, end_lat, end_lng)
 
         headers = {"Authorization": "{} {}".format(self.token_type,
                                                    self.__access_token)}
@@ -159,7 +159,7 @@ class Availability(object):
         lat = float(lat)
         lng = float(lng)
 
-        nearby_drivers_url = API_DEF+"drivers?lat={}&lng={}".format(lat, lng)
+        nearby_drivers_url = "{}drivers?lat={}&lng={}".format(AVAILABILITY, lat, lng)
 
         headers = {"Authorization": "{} {}".format(self.token_type,
                                                    self.__access_token)}
@@ -172,7 +172,7 @@ class Availability(object):
         else:
             raise Exception(nearby_drivers_response.json())
 
-    def get_eta_and_nearby_drivers(self, lat, lng, destination_lat=None, destination_lng=None, ride_type=None):
+    def get_eta_and_nearby_drivers(self, lat, lng, end_lat=None, end_lng=None, ride_type=None):
         """
         A GET to the /nearby-drivers-pickup-etas endpoint returns the estimated time for nearby
         drivers to reach the specified location, and their most recent locations.
@@ -186,32 +186,33 @@ class Availability(object):
 
         :param lat: float, REQUIRED, Latitude of a location
         :param lng: float, REQUIRED, Longitude of a location
-        :param destination_lat: float, Latitude of a location
-        :param destination_lng: float, Longitude of a location
+        :param end_lat: float, Latitude of a location
+        :param end_lng: float, Longitude of a location
         :param ride_type: string, ID of a ride type. Returned by this endpoint
         :return: nearby drivers and eta in JSON format
         """
         lat = float(lat)
         lng = float(lng)
         # check if destination is given
-        if all([destination_lat, destination_lng]) is True:
-            destination_lat = float(destination_lat)
-            destination_lng = float(destination_lng)
+        if all([end_lat, end_lng]) is True:
+            end_lat = float(end_lat)
+            end_lng = float(end_lng)
 
         # construct the request URL
-        if ride_type is None and (destination_lat is None or destination_lng is None):
-            eta_and_nearby_drivers_url = API_DEF+"nearby-drivers-pickup-etas?lat={}&lng={}".format(lat, lng)
+        if ride_type is None and (end_lat is None or end_lng is None):
+            eta_and_nearby_drivers_url = "{}nearby-drivers-pickup-etas?lat={}&lng={}".format(AVAILABILITY, lat, lng)
 
-        elif ride_type is not None and (destination_lat is None or destination_lng is None):
-            eta_and_nearby_drivers_url = API_DEF+"nearby-drivers-pickup-etas?lat={}&lng={}&ride_type={}".format(lat, lng, ride_type)
+        elif ride_type is not None and (end_lat is None or end_lng is None):
+            eta_and_nearby_drivers_url = "{}nearby-drivers-pickup-etas?lat={}&lng={}&ride_type={}".format(
+                AVAILABILITY, lat, lng, ride_type)
 
-        elif ride_type is not None and (destination_lat is not None or destination_lng is not None):
-            eta_and_nearby_drivers_url = API_DEF+"nearby-drivers-pickup-etas?lat={}&lng={}&destination_lat={}&destination_lng={}&ride_type={}".format(
-                lat, lng, destination_lat, destination_lng, ride_type)
+        elif ride_type is not None and (end_lat is not None or end_lng is not None):
+            eta_and_nearby_drivers_url = "{}nearby-drivers-pickup-etas?lat={}&lng={}&destination_lat={}&destination_lng={}&ride_type={}".format(
+                AVAILABILITY, lat, lng, end_lat, end_lng, ride_type)
 
-        elif ride_type is None and (destination_lat is not None or destination_lng is not None):
-            eta_and_nearby_drivers_url = API_DEF+"nearby-drivers-pickup-etas?lat={}&lng={}&destination_lat={}&destination_lng={}".format(
-                lat, lng, destination_lat, destination_lng)
+        elif ride_type is None and (end_lat is not None or end_lng is not None):
+            eta_and_nearby_drivers_url = "{}nearby-drivers-pickup-etas?lat={}&lng={}&destination_lat={}&destination_lng={}".format(
+                AVAILABILITY, lat, lng, end_lat, end_lng)
 
         headers = {"Authorization": "{} {}".format(self.token_type,
                                                    self.__access_token)}
