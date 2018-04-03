@@ -45,7 +45,7 @@ class Availability(object):
         else:
             raise Exception(ride_types_available_response.json())
 
-    def get_driver_eta(self, lat, lng, destination_lat=None, end_lng=None, ride_type=None):
+    def get_driver_eta(self, lat, lng, end_lat=None, end_lng=None, ride_type=None):
         """
         A GET to the /eta endpoint returns the estimated time in seconds it will take for the nearest driver to
         reach the specified location. A success response will be broken down by ridetypes available at the
@@ -57,7 +57,7 @@ class Availability(object):
 
         :param lat: float, REQUIRED, Latitude of a location
         :param lng: float, REQUIRED, Longitude of a location
-        :param destination_lat: float, Latitude of a location
+        :param end_lat: float, Latitude of a location
         :param end_lng: float, Longitude of a location
         :param ride_type: string, ID of a ride type. Returned by this endpoint
         :return: driver eta available in JSON format
@@ -65,15 +65,15 @@ class Availability(object):
         lat = float(lat)
         lng = float(lng)
         # check if destination is given
-        if all([destination_lat, end_lng]) is True:
-            destination_lat = float(destination_lat)
+        if all([end_lat, end_lng]) is True:
+            end_lat = float(end_lat)
             end_lng = float(end_lng)
 
         # construct the request URL
-        if ride_type is None and (destination_lat is None or end_lng is None):
+        if ride_type is None and (end_lat is None or end_lng is None):
             driver_eta_url = "{}eta?lat={}&lng={}".format(AVAILABILITY, lat, lng)
 
-        elif ride_type is not None and (destination_lat is None or end_lng is None):
+        elif ride_type is not None and (end_lat is None or end_lng is None):
             driver_eta_url = "{}eta?lat={}&lng={}&ride_type={}".format(AVAILABILITY, lat, lng, ride_type)
 
         elif ride_type is not None and (end_lat is not None or end_lng is not None):
