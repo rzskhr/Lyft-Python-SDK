@@ -30,7 +30,7 @@ token_type = res['token_type']
 class TestAvailability(unittest.TestCase):
     def test_get_ride_types(self):
         """
-        This test case tests the get_ride_types(self, lat, lng, ride_type=None) menthod
+        This test case tests the get_ride_types(self, lat, lng, ride_type=None) method
         in lyft.availability.Availability module
         """
         self.assertEqual(Availability(token_type, access_token).get_ride_types(37.7763, -122.3918),
