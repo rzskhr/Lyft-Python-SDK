@@ -11,3 +11,5 @@ test.html
 lyft/__pycache__/
 lyft/authentication/__pycache__/
 lyft/util/__pycache__/
+lyft.egg-info/
+lyft_python.egg-info/
