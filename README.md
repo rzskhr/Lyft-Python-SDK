@@ -103,5 +103,3 @@ GitHub's Documentation:
 - [General GitHub Documentation](https://help.github.com/)
 - [Collaborating with issues and pull requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
 
-## Authors
-#### @vmanikes , @rzskhr
