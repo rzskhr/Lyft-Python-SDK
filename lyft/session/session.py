@@ -14,11 +14,7 @@ class Session:
         """
         self.refresh_token  = refresh_token
         self.__sandbox_mode = sandbox_mode
-
-        if config.get("client_id") is not None and config.get("client_secret") is not None:
-            self.__config       = config
-        else:
-            raise ValueError("client id or client secret is None")
+        self.__config       = config
 
     def refresh_access_token(self):
         """Method to refresh the access token
@@ -26,7 +22,7 @@ class Session:
         :return: New Acceess token JSON Object
         """
         header = {"content-type": "application/json"}
-        data   = {"grant_type": "refresh_token", "refresh_token": self.refresh_token()}
+        data   = {"grant_type": "refresh_token", "refresh_token": self.refresh_token}
 
         client_id = self.__config.get("client_id")
         if self.__sandbox_mode is False:
@@ -41,15 +37,15 @@ class Session:
 
         if refresh_token_response.status_code == 200:
             refresh_token_response_json = refresh_token_response.json()
-            return json.dumps({"access_token"          : refresh_token_response_json.get("access_token"),
-                               "token_type"            : refresh_token_response_json.get("token_type"),
-                               "expires_in"            : refresh_token_response_json.get("expires_in"),
-                               "scope"                 : refresh_token_response_json.get("scope"),
-                               "x-ratelimit-remaining" : refresh_token_response.headers.get("x-ratelimit-remaining"),
-                               "x-ratelimit-limit"     : refresh_token_response.headers.get("x-ratelimit-limit")
-                               })
+            return {"access_token"          : refresh_token_response_json.get("access_token"),
+                    "token_type"            : refresh_token_response_json.get("token_type"),
+                    "expires_in"            : refresh_token_response_json.get("expires_in"),
+                    "scope"                 : refresh_token_response_json.get("scope"),
+                    "x-ratelimit-remaining" : refresh_token_response.headers.get("x-ratelimit-remaining"),
+                    "x-ratelimit-limit"     : refresh_token_response.headers.get("x-ratelimit-limit")
+                    }
         else:
-            raise Exception(refresh_token_response.text)
+            return refresh_token_response.json()
 
     def revoke_token(self):
         """Removes the user refresh token
@@ -70,6 +66,6 @@ class Session:
                                               headers=header,
                                               auth=HTTPBasicAuth(client_id, client_secret))
         if revoke_token_response.status_code == 200:
-            return json.dumps({"status": True})
+            return {"status": True}
         else:
-            raise Exception(revoke_token_response.text)
+            return revoke_token_response.json()

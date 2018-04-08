@@ -77,11 +77,9 @@ class Rides:
                                               headers=headers,
                                               data=json.dumps(data))
 
-        if ride_request_response.status_code == 201:
-            return ride_request_response.json()
-
-        else:
-            raise Exception(ride_request_response.json())
+        ride_request_response_json = ride_request_response.json()
+        ride_request_response_json["status_code"] = ride_request_response.status_code
+        return ride_request_response_json
 
     def get_ride_details(self, ride_id):
         """Get details of the ride given the ride_id such as pending, picked-up, dropped, cancelled, etc
@@ -94,14 +92,12 @@ class Rides:
                                                    self.__access_token),
                    "content-type" : "application/json"}
 
-        ride_request_response = requests.post("{}/{}".format(RIDE, ride_id),
+        ride_details_response = requests.post("{}/{}".format(RIDE, ride_id),
                                               headers=headers)
 
-        if ride_request_response.status_code == 200:
-            return ride_request_response.json()
-
-        else:
-            raise Exception(ride_request_response.json())
+        ride_details_response_json = ride_details_response.json()
+        ride_details_response_json["status_code"] = ride_details_response.status_code
+        return ride_details_response_json
 
     def update_destination(self, ride_id, lat, lng, address=None):
         """Update the destination of the specified ride. Note that the ride state must still be active (not droppedOff
@@ -135,10 +131,11 @@ class Rides:
                                                    data=json.dumps(data))
 
         if update_destination_response.status_code == 200:
-            return json.dumps({"message": "Success"})
+            response = {"status_code": update_destination_response.status_code, "message": "Success"}
+            return response
 
         else:
-            raise Exception(update_destination_response.json())
+            return update_destination_response.json()
 
     def set_rating_and_tip(self, ride_id, rating, tip_amount=None, currency="USD"):
         """Allows to tip the user and set rating for him, Rating is mandatory and accepts values from 1 to 5, while
@@ -156,7 +153,7 @@ class Rides:
                    "content-type" : "application/json"}
 
         if int(rating) > 5:
-            raise ValueError(json.dumps({"Message": "Please enter rating less than 5"}))
+            return {"error": "Please enter rating less than 5"}
 
         if tip_amount is None:
             data = {"rating": rating}
@@ -173,10 +170,13 @@ class Rides:
                                            data=json.dumps(data))
 
         if rating_tip_response.status_code == 204:
-            return json.dumps({"message": "Success"})
+            response = {}
+            response["status_code"] = rating_tip_response.status_code
+            response["message"] = "Success"
+            return response
 
         else:
-            raise Exception(rating_tip_response.json())
+            return rating_tip_response.json()
 
     def get_receipt(self, ride_id):
         """Get a receipt for the ride. Receipts are only available after the passenger has rated the ride and the
@@ -193,7 +193,26 @@ class Rides:
                                         headers=headers)
 
         if receipt_response.status_code == 200:
+            receipt_response_json = receipt_response.json()
+            receipt_response_json["status_code"] = receipt_response.status_code
+            return receipt_response_json
+        else:
             return receipt_response.json()
+
+    def cancel_ride(self, ride_id):
+        """Cancel ride
+
+        :param ride_id: Id of ride you want to retrieve the receipt
+        :return: Message object
+        """
+        headers = {"Authorization": "{} {}".format(self.token_type,
+                                                   self.__access_token),
+                   "content-type": "application/json"}
+        receipt_response = requests.get("{}/{}/cancel".format(RIDE, ride_id),
+                                        headers=headers)
+
+        if receipt_response.status_code == 204:
+            return json.dumps({"message": "Success"})
+
         else:
             raise Exception(receipt_response.json())
-
