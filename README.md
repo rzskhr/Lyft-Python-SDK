@@ -7,7 +7,7 @@ Welcome to Lyft-Python-SDK. This SDK enables Python developers to programmatical
 
 ## RIDE REQUEST API
 
-### Availability - Ride Types
+#### Availability - Ride Types
 A GET to the /ridetypes endpoint returns the ride types available at the specified location, indicated by latitude and longitude. If no ride types are available at the specified location, the response will be an error.
 
 Usage:
@@ -18,47 +18,6 @@ availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
 response = availability_obj.get_ride_types(37.7763, -122.3918)
 ```
 
-Response Object:
-```python
-{
-  'ride_types': [
-    {
-      'display_name': 'Lyft Line',
-      'pricing_details': {
-        'base_charge': 200,
-        'cost_minimum': 475,
-        'cost_per_minute': 22,
-        'cost_per_mile': 121,
-        'currency': 'USD',
-        'trust_and_service': 200,
-        'cancel_penalty_amount': 500
-      },
-      'image_url': 'https://cdn.lyft.com/assets/car_standard.png',
-      'seats': 2,
-      'ride_type': 'lyft_line'
-    },
-    {
-      'display_name': 'Lyft',
-      'pricing_details': {
-        'base_charge': 200,
-        'cost_minimum': 500,
-        'cost_per_minute': 22,
-        'cost_per_mile': 121,
-        'currency': 'USD',
-        'trust_and_service': 200,
-        'cancel_penalty_amount': 500
-      },
-      'image_url': 'https://cdn.lyft.com/assets/car_standard.png',
-      'seats': 4,
-      'ride_type': 'lyft'
-    },
-    ...
-    ...
-    ...
-  ]
-}
-```
-
 Usage - With Ride type:
 ```python
 from lyft.availability import Availability
@@ -67,27 +26,33 @@ availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
 response = availability_obj.get_ride_types(37.7763, -122.3918, 'lyft_line')
 ```
 
-Response Object:
+#### Availability - Driver ETA
+A GET to the /eta endpoint returns the estimated time in seconds it will take for the nearest driver to reach the specified location. A success response will be broken down by ridetypes available at the specified location. An optional ride_type parameter can be specified to only return the ETA for that ridetype. Valid inputs for the ride_type parameter can be found by querying the /v1/ridetypes endpoint.
+
+An empty response indicates that the specified ride_type isn't available at the specified location. You can try requesting again without the ride_type parameter.
+
+Usage:
 ```python
-{
-  'ride_types': [
-    {
-      'display_name': 'Lyft Line',
-      'pricing_details': {
-        'base_charge': 200,
-        'cost_minimum': 475,
-        'cost_per_minute': 22,
-        'cost_per_mile': 121,
-        'currency': 'USD',
-        'trust_and_service': 200,
-        'cancel_penalty_amount': 500
-      },
-      'image_url': 'https://cdn.lyft.com/assets/car_standard.png',
-      'seats': 2,
-      'ride_type': 'lyft_line'
-    }
-  ]
-}
+from lyft.availability import Availability
+availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
+
+response = availability_obj.get_driver_eta(37.7763, -122.3918)
+```
+
+Usage - With Destination:
+```python
+from lyft.availability import Availability
+availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
+
+response = availability_obj.get_driver_eta(37.7763, -122.3918, 36.3452, -121.3435)
+```
+
+Usage - With Destination and Ride Type:
+```python
+from lyft.availability import Availability
+availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
+
+response = availability_obj.get_driver_eta(37.7763, -122.3918, 36.3452, -121.3435, 'lyft_line')
 ```
 
 
@@ -109,6 +74,7 @@ GitHub's Documentation:
 ## Terms of Use
 Your use of this SDK is subject to, and by using or downloading the Lyft-Python-SDK files you agree to comply with, the Lyft API’s [Terms of Use](https://developer.lyft.com/docs/lyft-developer-platform-terms-of-use).
 
+[Brand Guidelines for Lyft Developers](https://developer.lyft.com/docs/brand-guidelines)
 This is not an official Lyft product.
 
 ## License
