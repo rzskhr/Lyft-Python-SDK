@@ -17,10 +17,7 @@ class LyftPublicAuth:
 
         """
         self.__sandbox_mode = sandbox_mode
-        if config.get("client_id") is not None and config.get("client_secret") is not None:
-            self.__config       = config
-        else:
-            raise ValueError("client id or client secret is None")
+        self.__config = config
 
     def get_access_token(self):
         """Retrieves the access token along with the expiration time and rate limiting data in a dictionary
@@ -36,8 +33,6 @@ class LyftPublicAuth:
         else:
             client_secret   = "SANDBOX-{}".format(self.__config.get("client_secret"))
 
-        # TODO check if scope needs to be imported or public is sufficient
-
         data = {"grant_type": "client_credentials",
                 "scope": "public"}
 
@@ -48,14 +43,14 @@ class LyftPublicAuth:
 
         if authentication_response.status_code == 200:
             authentication_response_json = authentication_response.json()
-            return json.dumps({"x-ratelimit-limit"     : authentication_response.headers.get("x-ratelimit-limit"),
-                               "x-ratelimit-remaining" : authentication_response.headers.get("x-ratelimit-remaining"),
-                               "expires_in"            : authentication_response_json.get("expires_in"),
-                               "access_token"          : authentication_response_json.get("access_token"),
-                               "token_type"            : authentication_response_json.get("token_type")}
-                              )
+            return {"x-ratelimit-limit"     : authentication_response.headers.get("x-ratelimit-limit"),
+                    "x-ratelimit-remaining" : authentication_response.headers.get("x-ratelimit-remaining"),
+                    "expires_in"            : authentication_response_json.get("expires_in"),
+                    "access_token"          : authentication_response_json.get("access_token"),
+                    "token_type"            : authentication_response_json.get("token_type")}
+
         else:
-            raise Exception(authentication_response.text)
+            return authentication_response.json()
 
 
 class LyftUserAuth:
@@ -69,12 +64,8 @@ class LyftUserAuth:
         :param state: A payload which will be passed back to your application through the redirect
 
         """
-        # TODO add exception here for config
         self.__sandbox_mode = sandbox_mode
-        if config.get("client_id") is not None and config.get("client_secret") is not None:
-            self.__config       = config
-        else:
-            raise ValueError("client id or client secret is None")
+        self.__config       = config
         self.__scopes       = scopes
         self.__state        = state
 
@@ -95,7 +86,13 @@ class LyftUserAuth:
         :return: URL: authorization URL that will be presented to user
         """
         client_id     = self.__config.get("client_id")
-        scopes        = "%20".join(self.__scopes)
+        if len(self.__scopes) > 0:
+            scopes        = "%20".join(self.__scopes)
+        else:
+            return None
+
+        if client_id is None or len(client_id) == 0:
+            return None
 
         header = {"content-type": "application/json"}
         redirect_response = requests.get("{}?client_id={}&scope={}&state={}&response_type=code".format(USER_AUTH_URL,
@@ -109,7 +106,7 @@ class LyftUserAuth:
             return redirect_response.url
 
         else:
-            raise Exception(redirect_response.text)
+            return redirect_response.json()
 
     def get_access_token(self, authorization_code):
         """We will use the authorization code that we will get after the user authenticates with the application to
@@ -122,6 +119,7 @@ class LyftUserAuth:
         data   = {"grant_type": "authorization_code", "code": authorization_code}
 
         client_id = self.__config.get("client_id")
+
         if self.__sandbox_mode is False:
             client_secret = self.__config.get("client_secret")
         else:
@@ -144,4 +142,4 @@ class LyftUserAuth:
                     }
 
         else:
-            raise Exception(authentication_response.text)
+            return authentication_response.json()
