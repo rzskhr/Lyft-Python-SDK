@@ -2,6 +2,9 @@
 
 Welcome to Lyft-Python-SDK. This SDK enables Python developers to programmatically interact with Lyft's rider and driver network using Lyft API.
 
+## Installation
+
+
 ## RIDE REQUEST API
 
 ### Availability - Ride Types
@@ -103,3 +106,7 @@ GitHub's Documentation:
 - [General GitHub Documentation](https://help.github.com/)
 - [Collaborating with issues and pull requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
 
+## Terms of Use
+Your use of this SDK is subject to, and by using or downloading the Lyft-Python-SDK files you agree to comply with, the Lyft API’s [Terms of Use](https://developer.lyft.com/docs/lyft-developer-platform-terms-of-use).
+
+This is not an official Lyft product.
