@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: Lyft-python-sdk
+Version: 0.1
+Summary: A python wrapper for the Lyft REST API
+Home-page: https://github.com/vmanikes/Lyft-Python-SDK
+Author: Raj Dutta
+Author-email: vmanikes@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
