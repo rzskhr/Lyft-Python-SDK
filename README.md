@@ -75,6 +75,7 @@ GitHub's Documentation:
 Your use of this SDK is subject to, and by using or downloading the Lyft-Python-SDK files you agree to comply with, the Lyft API’s [Terms of Use](https://developer.lyft.com/docs/lyft-developer-platform-terms-of-use).
 
 [Brand Guidelines for Lyft Developers](https://developer.lyft.com/docs/brand-guidelines)
+
 This is not an official Lyft product.
 
 ## License
