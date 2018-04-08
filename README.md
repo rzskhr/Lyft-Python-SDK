@@ -88,6 +88,9 @@ Response Object:
 ```
 
 
+## Prerequisites and Dependencies
+- Python 3.X
+- [requests](http://docs.python-requests.org/en/latest/)
 
 ## Getting help
 Lyft developer community is very active on StackOverflow, keep an eye on the [Lyft Tag](https://stackoverflow.com/questions/tagged/lyft-api) and post your questions if you need any help in using the library. Don’t forget to tag your question with lyft-api and python!
@@ -100,3 +103,5 @@ GitHub's Documentation:
 - [General GitHub Documentation](https://help.github.com/)
 - [Collaborating with issues and pull requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
 
+## Authors
+#### @vmanikes , @rzskhr
