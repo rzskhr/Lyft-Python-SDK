@@ -6,7 +6,7 @@ Welcome to Lyft-Python-SDK. This SDK enables Python developers to programmatical
 ### TODO
 
 ## RIDE REQUEST API
-
+Here are few examples of how to use the Ride Request API and how to use this SDK to make requests to Lyft's API.
 #### Availability - Ride Types
 A GET to the /ridetypes endpoint returns the ride types available at the specified location, indicated by latitude and longitude. If no ride types are available at the specified location, the response will be an error.
 
@@ -27,7 +27,7 @@ response = availability_obj.get_ride_types(37.7763, -122.3918, 'lyft_line')
 ```
 
 #### Availability - Driver ETA
-A GET to the /eta endpoint returns the estimated time in seconds it will take for the nearest driver to reach the specified location. A success response will be broken down by ridetypes available at the specified location. An optional ride_type parameter can be specified to only return the ETA for that ridetype. Valid inputs for the ride_type parameter can be found by querying the /v1/ridetypes endpoint.
+A GET to the /eta endpoint returns the estimated time in sseconds it will take for the nearest driver to reach the specified location. A success response will be broken down by ridetypes available at the specified location. An optional ride_type parameter can be specified to only return the ETA for that ridetype. Valid inputs for the ride_type parameter can be found by querying the /v1/ridetypes endpoint.
 
 An empty response indicates that the specified ride_type isn't available at the specified location. You can try requesting again without the ride_type parameter.
 
@@ -37,6 +37,14 @@ from lyft.availability import Availability
 availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
 
 response = availability_obj.get_driver_eta(37.7763, -122.3918)
+```
+
+Usage - With Ride Type:
+```python
+from lyft.availability import Availability
+availability_obj = Availability(<TOKEN_TYPE>, <ACCESS_TOKEN>)
+
+response = availability_obj.get_driver_eta(37.7763, -122.3918, 'lyft_line')
 ```
 
 Usage - With Destination:
