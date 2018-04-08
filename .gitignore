@@ -6,3 +6,8 @@ lib64/
 pyvenv.cfg
 pip-selfcheck.json
 test.html
+.gitignore
+.idea/
+lyft/__pycache__/
+lyft/authentication/__pycache__/
+yft/util/__pycache__/
