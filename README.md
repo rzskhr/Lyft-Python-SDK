@@ -4,6 +4,7 @@ Welcome to Lyft-Python-SDK. This SDK enables Python developers to programmatical
 
 ## Authors
 Raj Dutta - [@rzskhr]
+<br/>
 Venkata S S K M Chaitanya - [@vmanikes]
 
 ## Installation
