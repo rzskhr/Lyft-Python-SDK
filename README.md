@@ -86,3 +86,12 @@ Response Object:
   ]
 }
 ```
+
+
+
+## Getting help
+Lyft developer community is very active on StackOverflow, keep an eye the [Lyft Tag](https://stackoverflow.com/questions/tagged/lyft-api) and post your questions if you need any help in using the library. Don’t forget to tag your question with lyft-api and python!
+For full documentation about Lyft API, visit Lyft’s [Developer Site](https://developer.lyft.com/docs).
+
+## Contribution
+If you've found a bug in the Python SDK, or would like new features added you are welcome, go ahead and open an issue or create a pull request against this repository. But before that, please search for similar issues. It's possible somebody has encountered this issue already. Also write a test to show your bug was fixed or the feature works as expected.
