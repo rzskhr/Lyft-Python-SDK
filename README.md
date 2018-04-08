@@ -2,6 +2,10 @@
 
 Welcome to Lyft-Python-SDK. This SDK enables Python developers to programmatically interact with Lyft's rider and driver network using Lyft API.
 
+## Authors
+Raj Dutta - [@rzskhr]
+Venkata S S K M Chaitanya - [@vmanikes]
+
 ## Installation
 This project only supports python 3 or greater and can be installed using the following command:
 
