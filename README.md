@@ -102,6 +102,7 @@ Here are few examples of how to use the Ride Request API and how to use this SDK
 #### Availability - Ride Types
 A GET to the /ridetypes endpoint returns the ride types available at the specified location, indicated by latitude and longitude. If no ride types are available at the specified location, the response will be an error.
 
+**NOTE**: Here the TOKEN_TYPE is "Bearer"
 Usage:
 ```python
 from lyft.availability import Availability
