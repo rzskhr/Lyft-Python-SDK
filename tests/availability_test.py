@@ -4,7 +4,7 @@ import unittest
 
 from lyft.authentication.auth import LyftPublicAuth
 from lyft.availability import Availability
-from lyft.test import availability_res
+from tests import availability_res
 
 # path to secret access config file
 ACCESS_TOKEN_PATH = "/Users/Raj/Root/Code/_PRIVATE_KEYS/lyft/test_app.cfg"
